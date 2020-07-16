@@ -1,23 +1,25 @@
 const express = require('express');
 const app = express();
+const hbs = require('hbs');
+require('./hbs/helpers');
 
 //Middlewares
+
 app.use(express.static(__dirname + '/public'));
+hbs.registerPartials(__dirname + '/views/partials');
+app.set('view engine', 'hbs');
 
 //Routing
 
 app.get('/', (req, res) => {
-  // res.send('HELLO WORLD');
-  let output = {
+  res.render('home', {
     nombre: 'Jorge',
-    edad: 32,
-    url: req.url,
-  };
-  res.send(output);
+    anio: new Date().getFullYear(),
+  });
 });
 
-app.get('/data', (req, res) => {
-  res.send('Hola Data');
+app.get('/about', (req, res) => {
+  res.render('about');
 });
 
 app.listen(3000, () => {
